@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 45% 98%;
+    --foreground: 222 43% 9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 43% 9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 43% 9%;
+
+    --primary: 188 86% 31%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 34 95% 57%;
+    --secondary-foreground: 224 44% 10%;
+
+    --muted: 210 32% 92%;
+    --muted-foreground: 218 14% 39%;
+
+    --accent: 354 78% 61%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 27% 84%;
+    --input: 214 27% 84%;
+    --ring: 188 86% 31%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 220 45% 12%;
+    --sidebar-foreground: 210 45% 96%;
+    --sidebar-primary: 188 86% 46%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 34% 18%;
+    --sidebar-accent-foreground: 210 45% 96%;
+    --sidebar-border: 222 28% 24%;
+    --sidebar-ring: 188 86% 46%;
+
+    --surface: 210 45% 96%;
+    --surface-strong: 220 45% 12%;
+    --surface-strong-foreground: 210 45% 97%;
+    --success: 150 64% 38%;
+    --success-foreground: 0 0% 100%;
+    --warning: 34 95% 57%;
+    --warning-foreground: 224 44% 10%;
+    --deadline: 354 78% 61%;
+    --deadline-foreground: 0 0% 100%;
+    --focus: 258 76% 61%;
+    --focus-foreground: 0 0% 100%;
+
+    --gradient-app: linear-gradient(135deg, hsl(210 45% 98%) 0%, hsl(187 62% 94%) 46%, hsl(38 93% 93%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(220 45% 12%) 0%, hsl(194 74% 24%) 52%, hsl(188 86% 31%) 100%);
+    --gradient-action: linear-gradient(135deg, hsl(var(--primary)), hsl(172 73% 42%));
+    --gradient-urgent: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--secondary)));
+    --shadow-panel: 0 24px 80px -38px hsl(220 45% 12% / 0.34);
+    --shadow-lift: 0 16px 48px -24px hsl(188 86% 31% / 0.45);
+  }
+
+  .dark {
+    --background: 220 45% 8%;
+    --foreground: 210 45% 96%;
+    --card: 220 35% 12%;
+    --card-foreground: 210 45% 96%;
+    --popover: 220 35% 12%;
+    --popover-foreground: 210 45% 96%;
+    --primary: 188 86% 46%;
+    --primary-foreground: 220 45% 8%;
+    --secondary: 34 95% 57%;
+    --secondary-foreground: 224 44% 10%;
+    --muted: 220 26% 18%;
+    --muted-foreground: 211 22% 70%;
+    --accent: 354 78% 65%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 73% 52%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 23% 22%;
+    --input: 220 23% 22%;
+    --ring: 188 86% 46%;
+    --surface: 220 30% 13%;
+    --surface-strong: 210 45% 96%;
+    --surface-strong-foreground: 220 45% 8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Manrope', system-ui, sans-serif;
+    background: var(--gradient-app);
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: 'Sora', system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    background: hsl(var(--card) / 0.82);
+    backdrop-filter: blur(18px);
+  }
+
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+  }
+}
