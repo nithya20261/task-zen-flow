@@ -199,16 +199,12 @@ export function TaskManager() {
   };
 
   const handleGoogle = async () => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: window.location.origin,
-    },
+  const { error } = await lovable.auth.signInWithOAuth("google", {
+    redirect_uri: window.location.origin,
   });
 
   if (error) toast.error(error.message);
 };
-
   const handlePasswordReset = async () => {
     const email = authForm.email.trim();
     if (!z.string().email().safeParse(email).success) {
