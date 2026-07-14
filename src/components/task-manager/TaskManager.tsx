@@ -199,15 +199,25 @@ export function TaskManager() {
   };
 
   const handleGoogle = async () => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: window.location.origin,
-    },
-  });
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
+    });
 
-  if (error) toast.error(error.message);
-};
+    if (result.redirected) {
+      // Lovable's auth broker is handling the redirect flow.
+      // The browser will navigate away now, so there's nothing more to do here.
+      return;
+    }
+
+    if (result.error) {
+      toast.error(result.error.message ?? "Google sign-in failed.");
+      return;
+    }
+
+    // If we reach here without a redirect, the session was already set via setSession().
+    toast.success("Signed in with Google.");
+  };
+
   const handlePasswordReset = async () => {
     const email = authForm.email.trim();
     if (!z.string().email().safeParse(email).success) {
@@ -394,7 +404,7 @@ export function TaskManager() {
           <header className="glass-panel rounded-xl border border-border p-5 shadow-lift sm:p-6">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="font-bold text-primary">Today’s command center</p>
+                <p className="font-bold text-primary">Today's command center</p>
                 <h2 className="mt-1 font-display text-3xl font-extrabold tracking-normal sm:text-4xl">Assignments, deadlines, reminders</h2>
               </div>
               <div className="grid grid-cols-2 overflow-hidden rounded-lg border border-border bg-muted p-1 text-sm font-bold md:grid-cols-3">
