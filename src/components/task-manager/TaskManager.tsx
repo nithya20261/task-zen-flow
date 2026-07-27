@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
+
 import type { Tables } from "@/integrations/supabase/types";
 
 const authSchema = z.object({
@@ -197,26 +197,18 @@ export function TaskManager() {
 
     toast.success(authMode === "signin" ? "Welcome back." : "Check your email to confirm your account.");
   };
-
   const handleGoogle = async () => {
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: window.location.origin,
+    },
+  });
 
-    if (result.redirected) {
-      // Lovable's auth broker is handling the redirect flow.
-      // The browser will navigate away now, so there's nothing more to do here.
-      return;
-    }
-
-    if (result.error) {
-      toast.error(result.error.message ?? "Google sign-in failed.");
-      return;
-    }
-
-    // If we reach here without a redirect, the session was already set via setSession().
-    toast.success("Signed in with Google.");
-  };
+  if (error) {
+    toast.error(error.message);
+  }
+};
 
   const handlePasswordReset = async () => {
     const email = authForm.email.trim();
