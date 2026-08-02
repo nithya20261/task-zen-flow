@@ -263,18 +263,41 @@ export function TaskManager() {
   };
 
   const updateTaskStatus = async (task: Task, status: Status) => {
-    const { error } = await supabase
-      .from("tasks")
-      .update({ status, completed_at: status === "done" ? new Date().toISOString() : null })
-      .eq("id", task.id);
-    if (error) toast.error(error.message);
+  const previousTask = task;
+
+  const updatedTask = {
+    ...task,
+    status,
+    completed_at: status === "done" ? new Date().toISOString() : null,
   };
 
-  const deleteTask = async (task: Task) => {
-    const { error } = await supabase.from("tasks").delete().eq("id", task.id);
-    if (error) toast.error(error.message);
-    else toast.success("Task removed.");
-  };
+  // 1. Update UI instantly
+  setTasks((prev) =>
+    prev.map((t) =>
+      t.id === task.id ? updatedTask : t
+    )
+  );
+
+  // 2. Update database
+  const { error } = await supabase
+    .from("tasks")
+    .update({
+      status,
+      completed_at: status === "done" ? new Date().toISOString() : null,
+    })
+    .eq("id", task.id);
+
+  // 3. If database fails, restore old UI
+  if (error) {
+    toast.error(error.message);
+
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === task.id ? previousTask : t
+      )
+    );
+  }
+};
 
   if (!session) {
     return (
